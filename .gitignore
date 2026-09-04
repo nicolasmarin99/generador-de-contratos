@@ -6,6 +6,13 @@ salida/*
 !salida/.gitkeep
 subidas/*
 !subidas/.gitkeep
+historial/*
+!historial/.gitkeep
 .idea/
 .DS_Store
 .claude/settings.local.json
+
+# Empaquetado del ejecutable
+build/
+dist/
+*.spec.bak

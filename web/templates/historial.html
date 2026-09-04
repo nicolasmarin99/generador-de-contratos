@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block titulo %}Historial · Generador de contratos{% endblock %}
+
+{% block contenido %}
+
+<div class="bloque">
+  <h2>Historial de contratos generados</h2>
+  <p class="nota">
+    Queda guardado en este equipo, en <code>historial/historial.db</code>.
+    Busca por cliente, RUT o software.
+  </p>
+
+  <form class="busqueda" action="/historial" method="get">
+    <input type="text" name="q" value="{{ busqueda }}" placeholder="Buscar por cliente, RUT o software…">
+    <button type="submit">Buscar</button>
+    {% if busqueda %}<a class="boton secundario" href="/historial">Limpiar</a>{% endif %}
+  </form>
+
+  {% if not registros %}
+  <p class="nota" style="margin-top:1.25rem">
+    {% if busqueda %}No hay contratos que coincidan con "{{ busqueda }}".{% else %}Todavía no se generó ningún contrato.{% endif %}
+  </p>
+  {% else %}
+  <div class="tabla-scroll">
+    <table class="historial">
+      <thead>
+        <tr>
+          <th>Generado</th>
+          <th>Software</th>
+          <th>Cliente</th>
+          <th>RUT</th>
+          <th>Archivo</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in registros %}
+        <tr>
+          <td class="fecha-hora">{{ r.creado_en.strftime('%d-%m-%Y %H:%M') }}</td>
+          <td>
+            {{ r.software }}
+            <span class="etiqueta-tipo {% if r.cliente_externo %}externo{% else %}interno{% endif %}">
+              {% if r.cliente_externo %}Externo{% else %}Interno{% endif %}
+            </span>
+          </td>
+          <td>{{ r.cliente }}</td>
+          <td>{{ r.rut_cliente }}</td>
+          <td><a href="/descargar/{{ r.archivo }}">{{ r.archivo }}</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

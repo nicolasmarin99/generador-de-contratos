@@ -12,7 +12,9 @@ EL FLUJO
     GET  /                    elegir que tipo de contrato generar
     GET  /nuevo/{tipo}        formulario con los datos del cliente
     POST /generar             construye el contrato, renderiza la plantilla
-                               exacta y ofrece la descarga
+                               exacta, la registra en el historial y ofrece
+                               la descarga
+    GET  /historial            contratos generados en este equipo, con busqueda
     GET  /descargar/{nombre}  entrega el .docx generado
 
 No hay paso de "subir un documento": la plantilla siempre es la oficial de
@@ -29,18 +31,20 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
 
+from contratos import historial
 from contratos.modelos import Cliente, ContratoImpactOnline, ContratoTechTool
 from contratos.motor import PlantillaIncompleta, generar_docx
+from contratos.rutas import raiz_app
 
-AQUI = Path(__file__).resolve().parent
-RAIZ = AQUI.parent
+RAIZ = raiz_app()
 DIR_SALIDA = RAIZ / "salida"
+DIR_HISTORIAL = RAIZ / "historial"
 
 DIR_SALIDA.mkdir(exist_ok=True)
 
 app = FastAPI(title="Generador de contratos")
-app.mount("/static", StaticFiles(directory=AQUI / "static"), name="static")
-plantillas_html = Jinja2Templates(directory=AQUI / "templates")
+app.mount("/static", StaticFiles(directory=RAIZ / "web" / "static"), name="static")
+plantillas_html = Jinja2Templates(directory=RAIZ / "web" / "templates")
 
 #: Los 4 contratos que se pueden generar. La clave es la que viaja en la URL
 #: y en el campo oculto "tipo" del formulario.
@@ -195,12 +199,31 @@ async def generar(
         return con_error(_errores_legibles(error))
 
     try:
-        ruta = generar_docx(contrato)
+        ruta = generar_docx(contrato, dir_salida=DIR_SALIDA)
     except PlantillaIncompleta as error:
         return con_error([str(error)])
 
+    historial.registrar(
+        DIR_HISTORIAL,
+        tipo=tipo,
+        software=contrato.software,
+        cliente_externo=contrato.cliente_externo,
+        cliente=contrato.cliente.razon_social,
+        rut_cliente=contrato.cliente.rut,
+        fecha_contrato=contrato.fecha.strftime("%d-%m-%Y"),
+        archivo=ruta.name,
+    )
+
     return plantillas_html.TemplateResponse(
         request, "resultado.html", {"archivo": ruta.name}
+    )
+
+
+@app.get("/historial", response_class=HTMLResponse)
+def ver_historial(request: Request, q: str = ""):
+    registros = historial.listar(DIR_HISTORIAL, busqueda=q)
+    return plantillas_html.TemplateResponse(
+        request, "historial.html", {"registros": registros, "busqueda": q}
     )
 
 

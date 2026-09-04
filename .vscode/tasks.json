@@ -8,6 +8,18 @@
       "problemMatcher": []
     },
     {
+      "label": "Instalar dependencias de desarrollo",
+      "type": "shell",
+      "command": "pip install -r requirements-dev.txt",
+      "problemMatcher": []
+    },
+    {
+      "label": "Construir ejecutable de escritorio",
+      "type": "shell",
+      "command": "pyinstaller escritorio.spec",
+      "problemMatcher": []
+    },
+    {
       "label": "Levantar la web",
       "type": "shell",
       "command": "python servidor.py",

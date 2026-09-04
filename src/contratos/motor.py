@@ -12,8 +12,9 @@ from pathlib import Path
 from docxtpl import DocxTemplate
 
 from .modelos import ContratoBase
+from .rutas import raiz_app
 
-RAIZ = Path(__file__).resolve().parents[2]
+RAIZ = raiz_app()
 DIR_PLANTILLAS = RAIZ / "plantillas"
 DIR_SALIDA = RAIZ / "salida"
 

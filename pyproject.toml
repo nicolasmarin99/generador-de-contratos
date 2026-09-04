@@ -5,7 +5,7 @@ description = "Genera contratos de sublicencia reemplazando los datos del client
 requires-python = ">=3.10"
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+pythonpath = ["src", "web"]
 testpaths = ["tests"]
 
 [tool.ruff]

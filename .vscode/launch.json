@@ -25,6 +25,14 @@
       "console": "integratedTerminal"
     },
     {
+      "name": "Escritorio: modo ejecutable (sin recarga)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/escritorio.py",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
       "name": "Tests: todos",
       "type": "debugpy",
       "request": "launch",

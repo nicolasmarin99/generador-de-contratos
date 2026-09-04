@@ -1,0 +1,7 @@
+# Dependencias de desarrollo: no hacen falta para correr la app, solo para
+# testear (httpx, usado por TestClient) y para armar el ejecutable de
+# escritorio (pyinstaller).
+-r requirements.txt
+
+httpx==0.28.1
+pyinstaller==6.22.2

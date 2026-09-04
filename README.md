@@ -15,13 +15,17 @@ una operación reproducible y verificable.
 
 ```
 generador-contratos/
-├── servidor.py           # Arranca la web
+├── servidor.py           # Arranca la web (modo desarrollo, con recarga)
+├── escritorio.py         # Arranca la web (modo ejecutable: lo empaqueta PyInstaller)
+├── escritorio.spec       # Receta de empaquetado (pyinstaller escritorio.spec)
 ├── main.py               # Arranca la CLI
 ├── src/contratos/        # El dominio: no sabe que existe HTTP
 │   ├── validadores.py    #   Reglas: qué es un RUT válido
 │   ├── reemplazo.py      #   Sustituir texto sin romper las runs de Word
 │   ├── modelos.py        #   Forma de un cliente y de cada tipo de contrato
 │   ├── motor.py          #   Fusionar plantilla + datos con docxtpl
+│   ├── historial.py      #   Guarda y busca los contratos ya generados (sqlite)
+│   ├── rutas.py          #   Donde vive todo: fuente vs. ejecutable empaquetado
 │   └── cli.py            #   Entrada por terminal
 ├── web/                  # La interfaz web
 │   ├── app.py            #   Rutas HTTP
@@ -33,6 +37,7 @@ generador-contratos/
 │   ├── techtool/interno.docx  #   TechTool, cliente del Grupo Volvo
 │   └── techtool/externo.docx  #   TechTool, cliente externo
 ├── salida/               # Documentos generados
+├── historial/             # historial.db (sqlite): quién generó qué y cuándo
 ├── ejemplos/             # Contrato de prueba
 ├── scripts/              # Utilidades
 └── tests/                # Verificación automática
@@ -66,6 +71,13 @@ source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
+Para correr los tests o armar el ejecutable de escritorio, instala además las
+dependencias de desarrollo (incluye las de arriba):
+
+```bash
+pip install -r requirements-dev.txt
+```
+
 ## Cómo se usa (aplicación web)
 
 ```bash
@@ -88,6 +100,42 @@ Abre <http://127.0.0.1:8000> y sigue tres pasos:
 La CLI usa el mismo motor y comparte el mismo validador de RUT:
 `python main.py impact datos/clientes/gran-americas.json`. La diferencia es
 solo la interfaz: la CLI lee un JSON, la web lee un formulario.
+
+## Historial
+
+Cada contrato generado (desde la web o el ejecutable) queda registrado en
+`historial/historial.db` — un sqlite local a este equipo, no una base de
+datos compartida. En <http://127.0.0.1:8000/historial> se ve la lista
+completa (fecha y hora, software, cliente, RUT, archivo) con un buscador que
+filtra por cliente, RUT o software. El botón "Descargar" de cada fila reusa
+la ruta `/descargar/{archivo}`, así que sigue funcionando mientras el `.docx`
+no se haya borrado de `salida/`.
+
+## Ejecutable de escritorio
+
+Para no depender de tener Python instalado, `escritorio.py` empaqueta la
+misma app web en un `.exe` que abre el navegador solo al arrancar:
+
+```bash
+pip install -r requirements-dev.txt
+pyinstaller escritorio.spec
+```
+
+El resultado queda en `dist/GeneradorContratos/`. Es modo "onedir" a
+propósito (una carpeta con el `.exe` y sus archivos al lado, no un solo
+archivo comprimido): `plantillas/`, `web/`, `salida/` e `historial/` quedan
+como carpetas normales junto al ejecutable — se pueden editar las plantillas
+sin reconstruir el `.exe`, y `salida/`/`historial/` sobreviven aunque se
+reemplace el ejecutable por una versión nueva. Para distribuirlo, comprime y
+comparte toda la carpeta `dist/GeneradorContratos/`, no solo el `.exe`.
+
+`escritorio.py` es distinto de `servidor.py`: no usa recarga automática (no
+tiene sentido en un `.exe` ya construido) y abre el navegador por su cuenta.
+`src/contratos/rutas.py` es lo que hace que ambos modos —código fuente y
+`.exe`— resuelvan las mismas rutas relativas (`plantillas/`, `salida/`,
+`historial/`): detecta si está corriendo empaquetado (`sys.frozen`) y en ese
+caso usa la carpeta del ejecutable como raíz, en vez de la carpeta del
+proyecto.
 
 ## Cómo marcar tus plantillas reales
 
@@ -163,8 +211,14 @@ renderiza. Por eso no aparece en esta tabla.
 ## Tests
 
 ```bash
+pip install -r requirements-dev.txt   # trae httpx, que usa TestClient
 pytest
 ```
+
+Incluye tests de dominio (RUT, reemplazo, modelos, historial, rutas) y de
+integración de la API web completa (`tests/test_web_app.py`, con
+`fastapi.testclient.TestClient`), aislados del `salida/`/`historial/` reales
+mediante `tmp_path`.
 
 ## Estado
 
@@ -172,9 +226,9 @@ pytest
 - [x] Motor de fusión plantilla + datos
 - [x] Exportación a PDF
 - [x] Interfaz de línea de comandos
-- [x] Tests
+- [x] Tests (dominio + integración de la API web)
 - [x] Interfaz web con formulario (elegir tipo → completar datos → descargar)
 - [x] 4 plantillas oficiales (Impact/TechTool × interno/externo)
-- [ ] Historial de contratos generados
-- [ ] Borrado automático de los archivos subidos
+- [x] Historial de contratos generados, con búsqueda
+- [x] Ejecutable de escritorio (PyInstaller)
 - [ ] Despliegue

@@ -10,15 +10,21 @@ por capas y los invariantes del reemplazo de texto.
 
 ## No romper
 
-- No sustituir el `sort` por longitud en `reemplazo.aplicar`.
 - No usar `parrafo.text.replace()` sobre un `.docx`: rompe con las runs de Word.
 - No poner reglas de negocio en `web/app.py`. Van en `src/contratos/`.
-- No agregar un campo del contrato fuera de `src/contratos/campos.py`.
+- No agregar un campo del contrato fuera de `src/contratos/modelos.py`.
+- No llamar a `generar_docx()` desde `web/app.py` sin pasar `dir_salida`
+  explícito (si no, ignora el `DIR_SALIDA` de la web y escribe en el `salida/`
+  real del proyecto, incluso durante los tests).
+- `historial.py` y `rutas.py` reciben la carpeta de trabajo como parámetro;
+  no deben resolverla ellos mismos con una ruta fija.
 
 ## Al terminar una tarea
 
-- Ejecutar `python -m pytest` y dejarlo en verde.
-- Si se tocó `reemplazo.py` o `deteccion.py`, agregar el test correspondiente.
+- Ejecutar `python -m pytest` y dejarlo en verde (requiere
+  `pip install -r requirements-dev.txt`, por `httpx`/`TestClient`).
+- Si se tocó `reemplazo.py`, `historial.py` o `rutas.py`, agregar el test
+  correspondiente.
 
 ## Tono
 

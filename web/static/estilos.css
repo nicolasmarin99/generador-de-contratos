@@ -52,6 +52,21 @@ header.marca {
   max-width: 52ch;
 }
 
+.nav-marca {
+  display: flex;
+  gap: 1.1rem;
+  margin-top: 1.1rem;
+}
+
+.nav-marca a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--tinta-suave);
+  text-decoration: none;
+}
+
+.nav-marca a:hover { color: var(--sello); }
+
 /* --- Bloques ---------------------------------------------------------- */
 
 .bloque {
@@ -186,6 +201,68 @@ button:focus-visible, .boton:focus-visible { outline: 2px solid var(--tinta); ou
 }
 
 .aviso ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
+
+/* --- Historial ---------------------------------------------------------- */
+
+.busqueda {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.busqueda input {
+  flex: 1 1 240px;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  background: var(--carta);
+  padding: 0.6rem 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  color: var(--tinta);
+}
+
+.busqueda input:focus { outline: 2px solid var(--sello); outline-offset: -1px; }
+
+.tabla-scroll { overflow-x: auto; }
+
+table.historial {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+table.historial th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--tinta-suave);
+  padding: 0.6rem 0.7rem;
+  border-bottom: 1px solid var(--linea);
+  white-space: nowrap;
+}
+
+table.historial td {
+  padding: 0.6rem 0.7rem;
+  border-bottom: 1px solid var(--linea);
+  vertical-align: top;
+}
+
+table.historial tbody tr:last-child td { border-bottom: none; }
+
+.fecha-hora { font-family: var(--mono); white-space: nowrap; color: var(--tinta-suave); }
+
+.etiqueta-tipo {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.etiqueta-tipo.interno { color: var(--sello); background: var(--sello-claro); }
+.etiqueta-tipo.externo { color: var(--oxido); background: var(--oxido-claro); }
 
 @media (max-width: 620px) {
   body { padding: 0 1rem 4rem; }
