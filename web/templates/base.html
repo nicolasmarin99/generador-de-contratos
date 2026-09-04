@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Generador de contratos{% endblock %}</title>
+  <link rel="stylesheet" href="/static/estilos.css">
+</head>
+<body>
+  <div class="hoja">
+    <header class="marca">
+      <h1><a href="/">Generador de contratos</a></h1>
+      <p>Elige el tipo de contrato, completa los datos del cliente y descarga el .docx generado desde la plantilla legal oficial.</p>
+    </header>
+    {% block contenido %}{% endblock %}
+  </div>
+</body>
+</html>

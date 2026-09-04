@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<div class="bloque">
+  <h2>Paso 1 · Elige el tipo de contrato</h2>
+  <p class="nota">
+    Cada opción carga su plantilla legal exacta (con la cláusula de costos ya
+    redactada según quién la asume). Solo vas a completar los datos del
+    cliente en el siguiente paso.
+  </p>
+
+  <div class="tarjetas-tipo">
+    {% for clave, info in tipos.items() %}
+    <a class="tarjeta-tipo" href="/nuevo/{{ clave }}">
+      <strong>{{ info.titulo }}</strong>
+      <span>{{ info.subtitulo }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

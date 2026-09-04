@@ -1,0 +1,194 @@
+:root {
+  --papel: #ecedea;
+  --carta: #ffffff;
+  --tinta: #16191b;
+  --tinta-suave: #5f6769;
+  --tinta-tenue: #8b9294;
+  --linea: #d6d9d3;
+  --sello: #1f5e52;
+  --sello-claro: #e7efec;
+  --oxido: #8a3d2e;
+  --oxido-claro: #f6ece9;
+  --radio: 3px;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0 1.5rem 6rem;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hoja { max-width: 780px; margin: 0 auto; }
+
+/* --- Encabezado ------------------------------------------------------- */
+
+header.marca {
+  padding: 3.5rem 0 2rem;
+  border-bottom: 1px solid var(--linea);
+  margin-bottom: 2.5rem;
+}
+
+.marca h1 a { text-decoration: none; color: inherit; display: inline-block; }
+
+.marca h1 {
+  margin: 0;
+  font-size: 1.55rem;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+}
+
+.marca p {
+  margin: 0.4rem 0 0;
+  color: var(--tinta-suave);
+  max-width: 52ch;
+}
+
+/* --- Bloques ---------------------------------------------------------- */
+
+.bloque {
+  background: var(--carta);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  padding: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.bloque > h2 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.bloque > h2 + p.nota { margin-top: 0; }
+
+p.nota {
+  color: var(--tinta-suave);
+  font-size: 0.875rem;
+  margin: 0 0 1.4rem;
+}
+
+/* --- Tarjetas de tipo de contrato (paso 1) ----------------------------- */
+
+.tarjetas-tipo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+}
+
+.tarjeta-tipo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  background: var(--carta);
+  color: var(--tinta);
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.tarjeta-tipo:hover { border-color: var(--sello); background: var(--sello-claro); }
+
+.tarjeta-tipo strong { font-size: 0.95rem; }
+.tarjeta-tipo span { font-size: 0.82rem; color: var(--tinta-suave); }
+
+/* --- Campos de formulario ----------------------------------------------- */
+
+.campo { margin: 0 0 1.25rem; }
+
+.campo > label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.campo input {
+  width: 100%;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  background: var(--carta);
+  padding: 0.6rem 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  color: var(--tinta);
+}
+
+.campo input:focus { outline: 2px solid var(--sello); outline-offset: -1px; }
+
+.ayuda {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--tinta-tenue);
+}
+
+/* --- Botones ---------------------------------------------------------- */
+
+button, .boton {
+  display: inline-block;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid var(--sello);
+  border-radius: var(--radio);
+  background: var(--sello);
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:hover, .boton:hover { background: #17493f; border-color: #17493f; }
+button:focus-visible, .boton:focus-visible { outline: 2px solid var(--tinta); outline-offset: 2px; }
+
+.boton.secundario {
+  background: transparent;
+  color: var(--tinta);
+  border-color: var(--linea);
+}
+.boton.secundario:hover { background: #f2f3f0; border-color: var(--tinta-tenue); }
+
+.acciones {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--linea);
+}
+
+/* --- Avisos ----------------------------------------------------------- */
+
+.aviso {
+  border-left: 2px solid var(--oxido);
+  background: var(--oxido-claro);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.875rem;
+  border-radius: 0;
+}
+
+.aviso.ok {
+  border-left-color: var(--sello);
+  background: var(--sello-claro);
+}
+
+.aviso ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
+
+@media (max-width: 620px) {
+  body { padding: 0 1rem 4rem; }
+  .bloque { padding: 1.25rem; }
+  .tarjetas-tipo { grid-template-columns: 1fr; }
+}

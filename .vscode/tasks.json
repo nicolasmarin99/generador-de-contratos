@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Instalar dependencias",
+      "type": "shell",
+      "command": "pip install -r requirements.txt",
+      "problemMatcher": []
+    },
+    {
+      "label": "Levantar la web",
+      "type": "shell",
+      "command": "python servidor.py",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Correr los tests",
+      "type": "shell",
+      "command": "python -m pytest -q",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Crear contrato de ejemplo",
+      "type": "shell",
+      "command": "python scripts/crear_contrato_ejemplo.py",
+      "problemMatcher": []
+    }
+  ]
+}

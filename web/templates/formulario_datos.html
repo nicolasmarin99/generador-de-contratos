@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+{% if errores %}
+<div class="aviso">
+  No se generó el documento. Revisa esto:
+  <ul>{% for error in errores %}<li>{{ error }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+
+<form class="bloque" action="/generar" method="post">
+  <input type="hidden" name="tipo" value="{{ tipo }}">
+
+  <h2>Paso 2 · {{ info.titulo }}</h2>
+  <p class="nota">{{ info.subtitulo }}</p>
+
+  <div class="campo">
+    <label for="razon_social">Razón social</label>
+    <input type="text" id="razon_social" name="razon_social" required minlength="3"
+           value="{{ (valores or {}).get('razon_social', '') }}">
+  </div>
+
+  <div class="campo">
+    <label for="rut">RUT</label>
+    <input type="text" id="rut" name="rut" required placeholder="77.981.536-6"
+           value="{{ (valores or {}).get('rut', '') }}">
+    <span class="ayuda">Se valida con módulo 11 antes de generar.</span>
+  </div>
+
+  <div class="campo">
+    <label for="direccion">Dirección</label>
+    <input type="text" id="direccion" name="direccion" required minlength="10"
+           value="{{ (valores or {}).get('direccion', '') }}">
+  </div>
+
+  <div class="campo">
+    <label for="contacto">Contacto</label>
+    <input type="text" id="contacto" name="contacto" required
+           value="{{ (valores or {}).get('contacto', '') }}">
+  </div>
+
+  <div class="campo">
+    <label for="representante_legal">Representante legal</label>
+    <input type="text" id="representante_legal" name="representante_legal" required
+           value="{{ (valores or {}).get('representante_legal', '') }}">
+  </div>
+
+  <div class="campo">
+    <label for="fecha">Fecha del contrato</label>
+    <input type="date" id="fecha" name="fecha" required
+           value="{{ (valores or {}).get('fecha') or hoy }}">
+  </div>
+
+  {% if info.software == 'impact' %}
+  <div class="campo">
+    <label for="cliente_id">Partner ID</label>
+    <input type="text" id="cliente_id" name="cliente_id" required
+           value="{{ (valores or {}).get('cliente_id', '') }}">
+  </div>
+
+  <div class="campo">
+    <label for="digipass">Digipass</label>
+    <input type="text" id="digipass" name="digipass"
+           value="{{ (valores or {}).get('digipass') or 'NA' }}">
+  </div>
+  {% else %}
+  <div class="campo">
+    <label for="partner_id">Partner ID</label>
+    <input type="text" id="partner_id" name="partner_id" required
+           value="{{ (valores or {}).get('partner_id', '') }}">
+  </div>
+
+  <div class="campo">
+    <label for="cantidad_licencias">Cantidad de licencias</label>
+    <input type="number" id="cantidad_licencias" name="cantidad_licencias" min="1" required
+           value="{{ (valores or {}).get('cantidad_licencias') or 1 }}">
+  </div>
+  {% endif %}
+
+  <div class="acciones">
+    <button type="submit">Generar el contrato</button>
+    <a class="boton secundario" href="/">Elegir otro tipo</a>
+  </div>
+</form>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+salida/*
+!salida/.gitkeep
+subidas/*
+!subidas/.gitkeep
+.idea/
+.DS_Store
+.claude/settings.local.json

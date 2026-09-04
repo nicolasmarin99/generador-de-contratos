@@ -1,0 +1,12 @@
+{
+  "cliente": {
+    "razon_social": "Gran Américas Santiago Chile S.A.",
+    "rut": "77.981.536-6",
+    "direccion": "Eliodoro Yáñez N° 2972, oficina 311, comuna de Providencia, ciudad de Santiago",
+    "contacto": "Katherine Casas",
+    "representante_legal": "Claudio Castillo Castillo"
+  },
+  "fecha": "2026-07-22",
+  "cliente_id": "CL099033",
+  "digipass": "NA"
+}

@@ -1,0 +1,12 @@
+[project]
+name = "generador-contratos"
+version = "0.1.0"
+description = "Genera contratos de sublicencia reemplazando los datos del cliente en un .docx"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88

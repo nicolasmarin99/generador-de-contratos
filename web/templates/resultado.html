@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<div class="bloque">
+  <div class="aviso ok">El contrato se generó correctamente.</div>
+
+  <h2>Paso 3 · Descargar</h2>
+  <p class="nota">
+    Es el texto exacto de la plantilla oficial, con los datos que ingresaste.
+  </p>
+
+  <div class="acciones">
+    <a class="boton" href="/descargar/{{ archivo }}">Descargar {{ archivo }}</a>
+    <a class="boton secundario" href="/">Generar otro contrato</a>
+  </div>
+</div>
+
+{% endblock %}
