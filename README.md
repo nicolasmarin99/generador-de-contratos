@@ -130,7 +130,10 @@ reemplace el ejecutable por una versión nueva. Para distribuirlo, comprime y
 comparte toda la carpeta `dist/GeneradorContratos/`, no solo el `.exe`.
 
 `escritorio.py` es distinto de `servidor.py`: no usa recarga automática (no
-tiene sentido en un `.exe` ya construido) y abre el navegador por su cuenta.
+tiene sentido en un `.exe` ya construido), abre el navegador por su cuenta y
+busca un puerto libre a partir del 8000 (si ya tienes la app abierta, u otro
+programa ocupa ese puerto, usa el 8001 y así; sin eso el `.exe` moría con un
+error de socket y la ventana se cerraba sola).
 `src/contratos/rutas.py` es lo que hace que ambos modos —código fuente y
 `.exe`— resuelvan las mismas rutas relativas (`plantillas/`, `salida/`,
 `historial/`): detecta si está corriendo empaquetado (`sys.frozen`) y en ese
